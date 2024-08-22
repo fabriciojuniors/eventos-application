@@ -28,7 +28,7 @@ public class InstituicaoService {
         return new PageDto<>(instituicoes, response.hasNextPage(), response.count());
     }
 
-    public Instituicao findById(final UUID id) {
+    public Instituicao findByIdOrElseThrow(final UUID id) {
         final Optional<Instituicao> instituicaoOpt = repository.findByIdOptional(id);
         return instituicaoOpt.orElseThrow(() -> new NotFoundException(String.format("Instituição id %s não existe", id)));
     }
@@ -40,14 +40,14 @@ public class InstituicaoService {
     }
 
     public Instituicao update(final UUID id, final InstituicaoDto dto) {
-        final Instituicao instituicao = findById(id);
+        final Instituicao instituicao = findByIdOrElseThrow(id);
         final Instituicao instituicaoUpdate = dto.toEntity(instituicao);
         repository.persist(instituicaoUpdate);
         return instituicaoUpdate;
     }
 
     public void delete(final UUID id) {
-        final Instituicao instituicao = findById(id);
+        final Instituicao instituicao = findByIdOrElseThrow(id);
         repository.delete(instituicao);
     }
 }

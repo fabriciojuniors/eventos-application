@@ -30,7 +30,7 @@ public class InstituicaoResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") final UUID id) {
-        return Response.ok(InstituicaoDto.from(service.findById(id))).build();
+        return Response.ok(InstituicaoDto.from(service.findByIdOrElseThrow(id))).build();
     }
 
     @POST
