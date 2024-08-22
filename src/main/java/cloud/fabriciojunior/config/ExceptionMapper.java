@@ -31,10 +31,9 @@ public class ExceptionMapper {
     }
 
     @ServerExceptionMapper
-    public Response mapException(final Exception exception) {
-        exception.printStackTrace();
+    public Response mapException(final RegraNegocioException exception) {
         return Response.serverError()
-                .entity(Map.of("message", "Erro interno ao processar requisição. Tente novamente."))
+                .entity(Map.of("message", exception.getMessage()))
                 .build();
     }
 
