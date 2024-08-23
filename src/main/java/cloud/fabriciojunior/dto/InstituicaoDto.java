@@ -3,14 +3,22 @@ package cloud.fabriciojunior.dto;
 import cloud.fabriciojunior.entity.Instituicao;
 import cloud.fabriciojunior.entity.enums.TipoInstituicao;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public record InstituicaoDto(UUID id,
                              String nome,
-                             TipoInstituicao tipo) {
+                             TipoInstituicao tipo,
+                             Collection<EventoDto> eventos) {
 
     public static InstituicaoDto from(final Instituicao instituicao) {
-        return new InstituicaoDto(instituicao.getId(), instituicao.getNome(), instituicao.getTipo());
+        final Collection<EventoDto> eventos = instituicao.getEventos().stream()
+                .map(EventoDto::from)
+                .toList();
+        return new InstituicaoDto(instituicao.getId(),
+                instituicao.getNome(),
+                instituicao.getTipo(),
+                eventos);
     }
 
     public Instituicao toEntity() {

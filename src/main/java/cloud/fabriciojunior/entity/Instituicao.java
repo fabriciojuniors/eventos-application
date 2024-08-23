@@ -4,6 +4,8 @@ import cloud.fabriciojunior.entity.enums.TipoInstituicao;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -26,5 +28,8 @@ public class Instituicao {
     @Column(name = "tipo", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoInstituicao tipo;
+
+    @OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Evento> eventos = new ArrayList<>();
 
 }
