@@ -7,8 +7,10 @@ import cloud.fabriciojunior.entity.Instituicao;
 import cloud.fabriciojunior.repository.EventoRepository;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,5 +56,16 @@ public class EventoService {
         if (!evento.isAtivo()) {
             throw new RegraNegocioException("Não é permitido alterar um evento encerrado.");
         }
+    }
+
+    @Transactional
+    public int processaEncerramentoAutomatico() {
+        final Collection<Evento> eventosParaEncerrar = repository.findAllPendentesEncerramento();
+        eventosParaEncerrar.forEach(evento -> {
+            evento.encerraSeNecessario();
+            repository.persist(evento);
+        });
+
+        return eventosParaEncerrar.size();
     }
 }
