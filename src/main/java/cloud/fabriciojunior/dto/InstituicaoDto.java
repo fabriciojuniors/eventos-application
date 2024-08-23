@@ -4,6 +4,7 @@ import cloud.fabriciojunior.entity.Instituicao;
 import cloud.fabriciojunior.entity.enums.TipoInstituicao;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 public record InstituicaoDto(UUID id,
@@ -12,7 +13,7 @@ public record InstituicaoDto(UUID id,
                              Collection<EventoDto> eventos) {
 
     public static InstituicaoDto from(final Instituicao instituicao) {
-        final Collection<EventoDto> eventos = instituicao.getEventos().stream()
+        final Collection<EventoDto> eventos = instituicao.getEventos() == null ? Collections.emptyList() : instituicao.getEventos().stream()
                 .map(EventoDto::from)
                 .toList();
         return new InstituicaoDto(instituicao.getId(),
