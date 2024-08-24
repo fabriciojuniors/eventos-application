@@ -2,7 +2,7 @@ package cloud.fabriciojunior.entity.enums;
 
 public enum TipoInstituicao {
 
-    CONFEDERECAO,
+    CONFEDERACAO,
     SINGULAR,
     CENTRAL,
     COOPERATIVA;
