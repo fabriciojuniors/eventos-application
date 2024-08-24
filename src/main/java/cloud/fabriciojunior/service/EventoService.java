@@ -31,6 +31,7 @@ public class EventoService {
     public Evento create(final UUID idInstituicao, final EventoDto dto) {
         final Instituicao instituicao = instituicaoService.findByIdOrElseThrow(idInstituicao);
         final Evento evento = dto.toEntity(instituicao);
+        validarDatasEvento(evento);
         repository.persist(evento);
         return  evento;
     }
@@ -42,6 +43,8 @@ public class EventoService {
 
         final Evento eventoUpdated = dto.toEntity(evento);
         eventoUpdated.encerraSeNecessario();
+        validarDatasEvento(eventoUpdated);
+        
         repository.persist(eventoUpdated);
         return eventoUpdated;
     }
@@ -52,9 +55,15 @@ public class EventoService {
         repository.delete(evento);
     }
 
-    private void validarEventoEncerrado(Evento evento) {
+    private void validarEventoEncerrado(final Evento evento) {
         if (!evento.isAtivo()) {
             throw new RegraNegocioException("Não é permitido alterar um evento encerrado.");
+        }
+    }
+
+    private void validarDatasEvento(final Evento evento) {
+        if (evento.getDataHoraFim().isBefore(evento.getDataHoraInicio())) {
+            throw new RegraNegocioException("A data fim deve ser maior que a data início");
         }
     }
 

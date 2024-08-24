@@ -41,7 +41,7 @@ public class EventoServiceTest {
     @Test
     @Transactional
     public void shouldCreate() {
-        final LocalDateTime dataHoraFim = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(8, 30));
+        final LocalDateTime dataHoraFim = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(10, 30));
         final LocalDateTime dataHoraInicio = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(9, 30));
         final UUID instituicaoId = UUID.fromString("32758e52-a5b5-4a1e-9726-2a5dede7e448");
         final EventoDto dto = new EventoDto(null, "Evento teste de integração", dataHoraInicio, dataHoraFim, true);
@@ -61,7 +61,7 @@ public class EventoServiceTest {
 
     @Test
     public void shouldUpdate() {
-        final LocalDateTime dataHoraFim = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(8, 30));
+        final LocalDateTime dataHoraFim = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(10, 30));
         final LocalDateTime dataHoraInicio = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(9, 30));
         final EventoDto dto = new EventoDto(UUID.fromString("ba36587e-cca3-4fb7-980b-bc9db3c3b319"),"ATUALIZADO", dataHoraInicio,dataHoraFim,true);
 
@@ -111,6 +111,15 @@ public class EventoServiceTest {
     public void shouldEncerrarEventosPendentes() {
         final int eventosPendentes = repository.findAllPendentesEncerramento().size();
         assertEquals(eventosPendentes, eventoService.processaEncerramentoAutomatico());
+    }
+
+    @Test
+    public void shuldNaoCriarCasoDataFimMenorDataInicio() {
+        final LocalDateTime dataHoraInicio = LocalDateTime.of(LocalDate.of(2024, 8, 23), LocalTime.of(9, 30));
+        final EventoDto dto = new EventoDto(UUID.fromString("d4dc4cbc-c0aa-491a-8ac8-84c4b47c92ea"),"ATUALIZADO", dataHoraInicio,dataHoraInicio.minusHours(1),true);
+
+        assertThrows(RegraNegocioException.class, () ->  eventoService.update(dto.id(), dto), "A data fim deve ser maior que a data início");
+
     }
 
 
