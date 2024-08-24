@@ -21,6 +21,14 @@ public class EventoResource {
     @Inject
     EventoService service;
 
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("idInstituicao") final UUID idInstituicao,
+                             @PathParam("id") final UUID id) {
+        final Evento evento = service.findByIdOrElseThrow(id);
+        return Response.ok(EventoDto.from(evento)).build();
+    }
+
     @POST
     @Transactional
     public Response save(@PathParam("idInstituicao") final UUID idInstituicao,
