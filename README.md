@@ -1,78 +1,39 @@
-# eventos-application
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+# Gestão de eventos (back-end)
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+Projeto destinado a realização de gestão de eventos de uma institução, permitindo o cadastro de instituições e eventos.
 
-## Running the application in dev mode
+## Funcionamento
+- Dado que seja realizado o cadastro de uma instituição é habilitado o cadastro de eventos.
+- As instituições possuem nome e tipo.
+- Os eventos possuem nome, data/hora de início, data/hora de finalização e indicativo se está ativo. Este indicativo é gerido automaticamente pela aplicação.
+- A cada intervalo (configurado em `application.properties`) é executado um `scheduler` que irá identificar os eventos pendentes de encerramento, encerrá-los e enviar uma notificação via `web socket`.
+- Uma vez encerrados, não é possível realizar alterações em eventos.
 
-You can run your application in dev mode that enables live coding using:
 
-```shell script
-./mvnw compile quarkus:dev
+## Tecnologias
+
+- Java 21
+- PostgreSQL
+- Quarkus
+- Mockito/JUnit
+## Executando localmente
+
+Para fazer o deploy desse projeto rode
+
+```bash
+  ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
-## Packaging and running the application
+## Rodando os testes
 
-The application can be packaged using:
+Para rodar os testes, rode o seguinte comando
 
-```shell script
-./mvnw package
+```bash
+  ./mvnw quarkus:test
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/eventos-application-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+## Documentação da API
+**Localmente acessar:** [SwaggerUI](http://localhost:8080/q/swagger-ui/)
