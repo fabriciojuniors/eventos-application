@@ -13,7 +13,7 @@ public record InstituicaoDto(UUID id,
                              Collection<EventoDto> eventos) {
 
     public static InstituicaoDto from(final Instituicao instituicao) {
-        final Collection<EventoDto> eventos = instituicao.getEventos() == null ? Collections.emptyList() : instituicao.getEventos().stream()
+        final Collection<EventoDto> eventos = instituicao.getEventos().stream()
                 .map(EventoDto::from)
                 .toList();
         return new InstituicaoDto(instituicao.getId(),

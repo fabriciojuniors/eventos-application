@@ -30,6 +30,7 @@ public class Evento {
     private LocalDateTime dataHoraFim;
 
     @Column
+    @Builder.Default
     private boolean ativo = true;
 
     @ManyToOne(fetch = FetchType.LAZY)

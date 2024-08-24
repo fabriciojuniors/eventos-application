@@ -30,6 +30,7 @@ public class Instituicao {
     private TipoInstituicao tipo;
 
     @OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Builder.Default
     private Collection<Evento> eventos = new ArrayList<>();
 
 }
